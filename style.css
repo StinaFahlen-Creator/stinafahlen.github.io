@@ -2,7 +2,7 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Georgia, 'Times New Roman';
+    font-family:Verdana, Geneva, Tahoma, sans-serif, 'Times New Roman';
 }
 
 
@@ -40,8 +40,8 @@ align-items:center;
 
 .logo{
 
-font-size:25px;
-font-weight:bold;
+font: size 25px;
+font-weight:normal;
 color:white;
 
 }
