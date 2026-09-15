@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="sv">
   <head>
     <!-- Google Tag Manager -->
     <script>
@@ -18,6 +18,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Stina Fahlén | Growth marketer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
 
@@ -32,166 +38,239 @@
       ></iframe
     ></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    <!-- Header -->
-    <header>
-      <nav class="navbar">
-        <div class="logo">Stina Fahlén</div>
 
-        <ul class="nav-links">
-          <li><a href="#about">About</a></li>
-          <li><a href="#skills">Skills</a></li>
-          <li><a href="#experience">Experience</a></li>
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#contact">Contact</a></li>
+    <!-- Header -->
+    <header class="site-header">
+      <nav class="navbar">
+        <a href="#top" class="logo">Stina Fahlén</a>
+
+        <button
+          class="nav-toggle"
+          id="navToggle"
+          aria-expanded="false"
+          aria-controls="navLinks"
+          aria-label="Öppna meny"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#about">Om mig</a></li>
+          <li><a href="#skills">Kompetens</a></li>
+          <li><a href="#experience">Erfarenhet</a></li>
+          <li><a href="#projects">Projekt</a></li>
+          <li><a href="#contact">Kontakt</a></li>
         </ul>
       </nav>
     </header>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section id="top" class="hero">
       <div class="hero-content">
-        <h1>Stina Fahlén <span>Blivande growth marketer</span></h1>
+        <p class="hero-kicker">Student på Berghs School of Communication</p>
+        <h1>
+          Stina Fahlén<br />
+          <span>blivande growth marketer</span>
+        </h1>
 
-        <h2>Student på Berghs SOC</h2>
-
-        <p>
-          Jag är en trevlig go tjej som vid sidan av berghs driver en egen
-          e-handel med handgjorda smycken.
+        <p class="hero-text">
+          Jag är en trevlig go tjej som vid sidan av Berghs driver en egen
+          e-handel med handgjorda smycken – så jag vet hur det känns att testa
+          en kampanj på riktiga pengar, inte bara i teorin.
         </p>
 
         <div class="hero-buttons">
-          <a href="#" class="btn"> Download Resume </a>
-
-          <a href="#kontakt" class="btn-outline"> Contact Me </a>
+          <a href="#" class="btn">Ladda ner CV</a>
+          <a href="#contact" class="btn-outline">Kontakta mig</a>
         </div>
       </div>
 
       <div class="profile-image">
-        <img src="min-bild.png" />
+        <svg
+          class="hero-motif"
+          viewBox="0 0 220 220"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <circle
+            cx="110"
+            cy="110"
+            r="98"
+            fill="none"
+            stroke="var(--brass)"
+            stroke-width="1.5"
+          />
+          <circle cx="110" cy="24" r="7" fill="var(--brass)" />
+          <circle cx="196" cy="110" r="5" fill="var(--forest)" />
+          <circle cx="30" cy="150" r="4" fill="var(--brass)" />
+        </svg>
+        <img src="min-bild.png" alt="Porträtt av Stina Fahlén" />
       </div>
     </section>
 
     <!-- About Section -->
     <section id="about" class="section">
-      <h2>Lite mer om mig</h2>
-
-      <p>
-        I am a passionate professional with experience in web development,
-        design, and digital solutions. I enjoy creating clean, user-friendly
-        experiences that solve real problems.
-      </p>
+      <div class="section-inner narrow">
+        <h2>Lite mer om mig</h2>
+        <p>
+          Jag studerar growth marketing på Berghs, där jag lär mig allt från
+          annonsering och konvertering till att läsa data och dra rätt
+          slutsatser av den. Vid sidan av studierna driver jag min egen
+          smyckesbutik, från idé och foto till annonser och leverans – så teori
+          och praktik hänger ihop för mig på riktigt.
+        </p>
+        <p>
+          Det jag gillar mest är gränslandet mellan kreativitet och siffror: att
+          hitta en idé som känns rätt, och sedan bevisa med data att den
+          faktiskt fungerar.
+        </p>
+      </div>
     </section>
 
     <!-- Skills Section -->
-    <section id="skills" class="section">
-      <h2>Mina styrkor</h2>
+    <section id="skills" class="section alt">
+      <div class="section-inner">
+        <h2>Mina styrkor</h2>
 
-      <div class="cards">
-        <div class="card">
-          <h3>Frontend</h3>
-          <p>HTML, CSS, JavaScript, Responsive Design</p>
-        </div>
+        <div class="cards">
+          <div class="card">
+            <h3>Growth &amp; performance</h3>
+            <p>
+              Kampanjplanering, A/B-testning, Meta &amp; Google Ads,
+              konverteringsoptimering.
+            </p>
+          </div>
 
-        <div class="card">
-          <h3>Backend</h3>
-          <p>PHP, Python, Database Management</p>
-        </div>
+          <div class="card">
+            <h3>Data &amp; analys</h3>
+            <p>
+              Google Analytics, enkel SQL, rapportering och uppföljning av
+              nyckeltal.
+            </p>
+          </div>
 
-        <div class="card">
-          <h3>Tools</h3>
-          <p>WordPress, Git, Figma, SEO Tools</p>
+          <div class="card">
+            <h3>Innehåll &amp; verktyg</h3>
+            <p>Copywriting, Shopify, Klaviyo, Figma, Meta Business Suite.</p>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Experience Section -->
     <section id="experience" class="section">
-      <h2>Experience</h2>
+      <div class="section-inner narrow">
+        <h2>Erfarenhet</h2>
 
-      <div class="timeline">
-        <div class="experience-box">
-          <h3>Senior Web Developer</h3>
+        <div class="timeline">
+          <div class="timeline-item">
+            <span class="timeline-dot" aria-hidden="true"></span>
+            <h3>Grundare</h3>
+            <h4>Eget smyckesmärke &middot; 2023 – nu</h4>
+            <p>
+              Ansvarar för hela kundresan: produkt, foto, annonsering i sociala
+              medier och e-handeln bakom butiken.
+            </p>
+          </div>
 
-          <h4>Company Name | 2024 - Present</h4>
-
-          <p>
-            Developed responsive websites, improved website performance, and
-            created digital solutions for clients.
-          </p>
-        </div>
-
-        <div class="experience-box">
-          <h3>Junior Developer</h3>
-
-          <h4>Company Name | 2022 - 2024</h4>
-
-          <p>
-            Worked on website development, testing, and user experience
-            improvements.
-          </p>
+          <div class="timeline-item">
+            <span class="timeline-dot" aria-hidden="true"></span>
+            <h3>Praktikant, marknad</h3>
+            <h4>Företagsnamn &middot; 2024</h4>
+            <p>
+              Tog fram och analyserade digitala kampanjer och hjälpte till att
+              förbättra hemsidans konvertering.
+            </p>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Projects -->
+    <section id="projects" class="section alt">
+      <div class="section-inner">
+        <h2>Utvalda projekt</h2>
 
-    <section id="projects" class="section">
-      <h2>Featured Projects</h2>
+        <div class="cards">
+          <div class="card">
+            <h3>Smyckesbutiken</h3>
+            <p>
+              Byggde och driver en egen e-handel, från varumärke till
+              annonsering och leverans.
+            </p>
+            <a href="#">Se projektet</a>
+          </div>
 
-      <div class="cards">
-        <div class="card">
-          <h3>Project One</h3>
-
-          <p>A modern business website built with responsive design.</p>
-
-          <a href="#">View Project</a>
-        </div>
-
-        <div class="card">
-          <h3>Project Two</h3>
-
-          <p>An online platform focused on improving customer experience.</p>
-
-          <a href="#">View Project</a>
+          <div class="card">
+            <h3>Kampanjcase, Berghs</h3>
+            <p>
+              Skolprojekt om en digital lanseringskampanj, från målgrupp till
+              mätbara resultat.
+            </p>
+            <a href="#">Se projektet</a>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Education -->
-
     <section class="section">
-      <h2>Education</h2>
+      <div class="section-inner narrow">
+        <h2>Utbildning</h2>
 
-      <div class="education">
-        <h3>Bachelor Degree</h3>
-
-        <p>University Name | 2018 - 2022</p>
+        <div class="education">
+          <h3>Growth Marketing</h3>
+          <p>Berghs School of Communication &middot; 2024 – 2026</p>
+        </div>
       </div>
     </section>
 
     <!-- Contact -->
-
     <section id="contact" class="section contact">
-      <h2>Contact Me</h2>
-
-      <p>Email: your@email.com</p>
-
-      <p>Phone: +123456789</p>
-
-      <p>LinkedIn: linkedin.com/in/yourname</p>
+      <div class="section-inner narrow">
+        <h2>Kontakta mig</h2>
+        <p><a href="mailto:din@mail.se">din@mail.se</a></p>
+        <p><a href="tel:+123456789">+12 345 678 9</a></p>
+        <p>
+          <a
+            href="https://linkedin.com/in/dittnamn"
+            target="_blank"
+            rel="noopener"
+            >linkedin.com/in/dittnamn</a
+          >
+        </p>
+      </div>
     </section>
 
     <!-- Footer -->
-
     <footer>
-      <p>© 2026 Stina Fahlén. All Rights Reserved.</p>
+      <p>&copy; 2026 Stina Fahlén. Alla rättigheter förbehållna.</p>
 
-      <div>
+      <div class="footer-links">
         <a href="#">LinkedIn</a>
-        <a href="#">GitHub</a>
-        <a href="#">Twitter</a>
+        <a href="#">Instagram</a>
       </div>
     </footer>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+      const navToggle = document.getElementById("navToggle");
+      const navLinks = document.getElementById("navLinks");
+
+      navToggle.addEventListener("click", () => {
+        const isOpen = navLinks.classList.toggle("is-open");
+        navToggle.classList.toggle("is-open", isOpen);
+        navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      });
+
+      navLinks.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => {
+          navLinks.classList.remove("is-open");
+          navToggle.classList.remove("is-open");
+          navToggle.setAttribute("aria-expanded", "false");
+        });
+      });
+    </script>
   </body>
 </html>
