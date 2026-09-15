@@ -1,4 +1,7 @@
 /* ---------- Tokens ---------- */
+html, body {
+  overflow-x: hidden;
+}
 :root {
   --ink: #201d1b;
   --paper: #faf7f2;
@@ -216,26 +219,26 @@ img {
   border-color: var(--brass);
   color: var(--brass);
 }
-
 .profile-image {
   position: relative;
   justify-self: center;
   width: 100%;
   max-width: 280px;
+  padding: 24px;
 }
 
 .profile-image img {
   border-radius: 4px;
   position: relative;
   z-index: 1;
+  width: 100%;
 }
 
 .hero-motif {
   position: absolute;
-  top: -24px;
-  left: -24px;
-  width: calc(100% + 48px);
-  height: calc(100% + 48px);
+  inset: 0;
+  width: 100%;
+  height: 100%;
   z-index: 0;
 }
 
