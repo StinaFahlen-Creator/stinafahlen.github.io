@@ -1,7 +1,16 @@
 <!doctype html>
-<html>
+<html lang="sv">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Svenskarnas AI-användning</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -9,15 +18,50 @@
   </head>
 
   <body>
-    <h1>Svenskarnas användning av AI och internet</h1>
+    <header class="page-header">
+      <span class="page-eyebrow">Data &amp; insikter</span>
+      <h1>Svenskarnas användning av AI och internet</h1>
+      <p class="page-lead">
+        Statistik över hur AI-verktyg som ChatGPT och internet i stort används i
+        Sverige, uppdelat på kön och år.
+      </p>
+    </header>
 
-    <div class="chart-container">
-      <canvas id="aiChart"></canvas>
-    </div>
+    <main class="chart-grid">
+      <div class="chart-block">
+        <div class="chart-container">
+          <canvas id="aiChart"></canvas>
+        </div>
+        <p class="chart-caption">
+          Fler och fler svenskar testar ChatGPT varje år, men ökningen går
+          snabbare bland män – gapet mellan könen har vuxit sig tydligt större
+          mellan 2024 och 2025.
+        </p>
+      </div>
 
-    <div class="chart-container">
-      <canvas id="internetChart"></canvas>
-    </div>
+      <div class="chart-block">
+        <div class="chart-container">
+          <canvas id="internetChart"></canvas>
+        </div>
+        <p class="chart-caption">
+          Nästan hela befolkningen är uppkopplad, och andelen som använder
+          internet dagligen fortsätter krypa uppåt – medan gruppen som aldrig är
+          online blir allt mindre.
+        </p>
+      </div>
+
+      <div class="chart-block chart-block--wide">
+        <div class="chart-container chart-container--wide">
+          <canvas id="searchSocialChart"></canvas>
+        </div>
+        <p class="chart-caption">
+          I Sverige svänger fördelningen betydligt mer än globalt: sök tappade
+          kraftigt till sociala medier våren 2025, återhämtade sig snabbt under
+          sommaren, och har sedan dess pendlat mellan cirka 84–90% med en ny
+          nedgång i februari och augusti 2026.
+        </p>
+      </div>
+    </main>
 
     <script src="script.js"></script>
   </body>
