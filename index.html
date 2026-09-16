@@ -219,12 +219,27 @@
         <a href="mailto:stina.fahlen@student.berghs.se"
           >stina.fahlen@student.berghs.se</a
         >
+        
         <p>
-          <a
-            href="https://www.linkedin.com/in/stina-fahl%C3%A9n-276808272/"
-            target="_blank"
-            rel="noopener"
-            >linkedin.com/in/stinafahlén</a
+  <a
+    href="https://www.linkedin.com/in/stina-fahlén-276808272/"
+    id="linkedin-btn"
+    target="_blank"
+    rel="noopener"
+    >linkedin.com/in/stinafahlén</a
+  >
+</p>
+
+<script>
+  document
+    .getElementById("linkedin-btn")
+    .addEventListener("click", function () {
+      window.dataLayer = window.dataLayer || [];
+      dataLayer.push({
+        event: "linkedin_click",
+      });
+    });
+</script>
           >
         </p>
       </div>
