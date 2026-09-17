@@ -221,25 +221,27 @@ img {
 }
 .profile-image {
   position: relative;
-  justify-self: center;
-  width: 100%;
-  max-width: 280px;
-  padding: 24px;
+  width: 220px;   /* samma mått som viewBox på SVG:n */
+  height: 220px;
 }
 
 .profile-image img {
-  border-radius: 4px;
-  position: relative;
-  z-index: 1;
-  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 160px;      /* justera storleken efter smak, mindre än SVG:ns 220px så ringen syns runt om */
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;  /* gör att bilden beskärs proportionerligt istället för att bli utdragen */
 }
 
 .hero-motif {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  z-index: 0;
 }
 
 /* ---------- Sections ---------- */

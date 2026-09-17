@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tunnelbana live</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Silkscreen:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="tunnelbana-widget.css" />
+  </head>
+  <body>
+    <div class="page-wrap">
+      <div class="t-sign" aria-hidden="true">
+        <div class="t-sign-plate">
+          <div class="lobe left"><span class="t-letter">T</span></div>
+          <div class="lobe right"><span class="t-letter">T</span></div>
+        </div>
+        <div class="t-sign-pole">
+          <svg
+            class="station-cat"
+            viewBox="0 0 200 220"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M138,168 C172,152 194,120 176,88 C165,104 149,120 138,142 C130,153 128,161 138,168 Z"
+              fill="#0a0a0a"
+            />
+            <path
+              d="M60,207 C44,207 38,182 44,155 C50,118 66,92 92,88 C122,85 148,103 153,140 C158,167 152,193 131,205 C115,213 79,213 60,207 Z"
+              fill="#0a0a0a"
+            />
+            <path
+              d="M99,207 L99,164"
+              stroke="#e9ece8"
+              stroke-width="3"
+              stroke-linecap="round"
+              opacity="0.9"
+            />
+            <circle cx="79" cy="78" r="37" fill="#0a0a0a" />
+            <path d="M49,60 L62,16 L79,58 Z" fill="#0a0a0a" />
+            <path d="M79,58 L100,12 L115,58 Z" fill="#0a0a0a" />
+            <ellipse class="eye" cx="65" cy="78" rx="10" ry="11" />
+            <ellipse class="eye" cx="94" cy="78" rx="10" ry="11" />
+            <circle class="pupil" cx="65" cy="80" r="4.5" />
+            <circle class="pupil" cx="94" cy="80" r="4.5" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="rock-cap"></div>
+
+      <div class="tile-wall">
+        <div class="station-sign">
+          <p class="eyebrow">STOCKHOLMS TUNNELBANA</p>
+          <h1 id="stationName">Söker din station…</h1>
+          <p class="sub" id="distanceInfo"></p>
+        </div>
+
+        <div class="board-frame">
+          <div class="board">
+            <div class="sign-header">
+              <span class="accent"></span>
+              <div class="content">
+                <div class="platform-badge">
+                  <span class="label">LÄGE</span>
+                  <span class="num" id="platformNum">–</span>
+                </div>
+                <span class="direction-text" id="directionText"
+                  >Nästa avgångar</span
+                >
+                <svg
+                  class="camera-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#333"
+                  stroke-width="1.6"
+                >
+                  <rect x="2" y="6" width="14" height="11" rx="2"></rect>
+                  <path d="M16 9l6-3v11l-6-3z"></path>
+                </svg>
+              </div>
+              <span class="accent"></span>
+            </div>
+
+            <ul class="departures" id="departuresList">
+              <li class="empty-state">Laddar…</li>
+            </ul>
+
+            <div class="board-footer">
+              <span
+                ><span class="live-dot">●</span>DIREKT ·
+                <span id="countdown">30s</span></span
+              >
+              <span>SL / TRAFIKLAB</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="search-panel">
+          <p class="label">Visa en annan station på skylten</p>
+          <div class="search-row">
+            <input
+              type="text"
+              id="stationInput"
+              placeholder="Skriv en tunnelbanestation, t.ex. Slussen…"
+              autocomplete="off"
+            />
+            <button class="locate" id="locateBtn" title="Använd min plats">
+              Min plats
+            </button>
+          </div>
+          <ul class="suggestions" id="suggestionList"></ul>
+        </div>
+      </div>
+
+      <div class="platform-edge"></div>
+      <div class="rock-cap bottom"></div>
+
+      <footer class="site-footer">
+        <p>
+          Live-avgångar från SL Transport API (Trafiklab) · uppdateras
+          automatiskt var 30:e sekund.
+        </p>
+      </footer>
+    </div>
+
+    <script>
+      (function () {
+        const SITES_URL =
+          "https://transport.integration.sl.se/v1/sites?expand=true";
+        const DEPARTURES_URL = (siteId) =>
+          `https://transport.integration.sl.se/v1/sites/${siteId}/departures?transport=METRO`;
+        const REFRESH_SECONDS = 30;
+
+        let allSites = [];
+        let currentSiteId = null;
+        let currentSiteName = "";
+        let refreshTimer = null;
+        let countdownTimer = null;
+        let secondsLeft = REFRESH_SECONDS;
+
+        const el = {
+          stationName: document.getElementById("stationName"),
+          countdown: document.getElementById("countdown"),
+          departuresList: document.getElementById("departuresList"),
+          distanceInfo: document.getElementById("distanceInfo"),
+          stationInput: document.getElementById("stationInput"),
+          suggestionList: document.getElementById("suggestionList"),
+          locateBtn: document.getElementById("locateBtn"),
+          directionText: document.getElementById("directionText"),
+          platformNum: document.getElementById("platformNum"),
+        };
+
+        function haversineKm(lat1, lon1, lat2, lon2) {
+          const R = 6371;
+          const dLat = ((lat2 - lat1) * Math.PI) / 180;
+          const dLon = ((lon2 - lon1) * Math.PI) / 180;
+          const a =
+            Math.sin(dLat / 2) ** 2 +
+            Math.cos((lat1 * Math.PI) / 180) *
+              Math.cos((lat2 * Math.PI) / 180) *
+              Math.sin(dLon / 2) ** 2;
+          return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        }
+
+        async function loadSites() {
+          if (allSites.length) return allSites;
+          const res = await fetch(SITES_URL);
+          if (!res.ok) throw new Error("Kunde inte hämta stationslistan");
+          allSites = await res.json();
+          return allSites;
+        }
+
+        function findNearestSite(lat, lon) {
+          let best = null,
+            bestDist = Infinity;
+          for (const site of allSites) {
+            if (typeof site.lat !== "number" || typeof site.lon !== "number")
+              continue;
+            const d = haversineKm(lat, lon, site.lat, site.lon);
+            if (d < bestDist) {
+              bestDist = d;
+              best = site;
+            }
+          }
+          return { site: best, distanceKm: bestDist };
+        }
+
+        function setStation(site, distanceKm) {
+          currentSiteId = site.id;
+          currentSiteName = site.name;
+          el.stationName.textContent = site.name;
+          el.distanceInfo.textContent =
+            typeof distanceKm === "number"
+              ? `${distanceKm.toFixed(2)} km bort`
+              : "Vald manuellt";
+          el.departuresList.innerHTML = '<li class="empty-state">Laddar…</li>';
+          fetchDepartures();
+          restartAutoRefresh();
+        }
+
+        function formatEta(expectedIso) {
+          const expected = new Date(expectedIso);
+          const diffMin = Math.round((expected - Date.now()) / 60000);
+          if (diffMin <= 0) return "Nu";
+          return `${diffMin} min.`;
+        }
+
+        async function fetchDepartures() {
+          if (!currentSiteId) return;
+          try {
+            const res = await fetch(DEPARTURES_URL(currentSiteId));
+            if (!res.ok) throw new Error("Nätverksfel: " + res.status);
+            const data = await res.json();
+            renderDepartures(data.departures || []);
+          } catch (err) {
+            el.departuresList.innerHTML = `<li class="error-state">Kunde inte hämta avgångar just nu. Försöker igen om ${REFRESH_SECONDS}s.</li>`;
+            console.error(err);
+          }
+        }
+
+        function renderDepartures(departures) {
+          if (!departures.length) {
+            el.departuresList.innerHTML = `<li class="empty-state">Inga tunnelbaneavgångar hittade från ${currentSiteName} just nu.</li>`;
+            el.directionText.textContent = "Inga avgångar";
+            el.platformNum.textContent = "–";
+            return;
+          }
+          const sorted = departures
+            .slice()
+            .sort((a, b) => new Date(a.expected) - new Date(b.expected))
+            .slice(0, 8);
+
+          const next = sorted[0];
+          el.directionText.textContent =
+            "Tåg mot " + (next.destination || next.direction || "");
+          el.platformNum.textContent = next.stop_point?.designation || "–";
+
+          function rowContentFor(dep) {
+            const eta = formatEta(dep.expected);
+            const line = dep.line?.designation || "?";
+            return `
+          <span class="row-line">${line}</span>
+          <span class="destination">${dep.destination || dep.direction || ""}</span>
+          <span class="eta">${eta}</span>`;
+          }
+
+          const top = sorted[0];
+          const upcoming = sorted.slice(1, 4);
+
+          let boardHtml = `<li class="departure-row static">${rowContentFor(top)}</li>`;
+
+          if (upcoming.length) {
+            const tickerContent = upcoming
+              .map(rowContentFor)
+              .join('<span class="ticker-sep">•</span>');
+            boardHtml += `
+        <li class="departure-row scroll-row">
+          <div class="scroll-track">${tickerContent}</div>
+        </li>`;
+          }
+
+          el.departuresList.innerHTML = boardHtml;
+        }
+
+        function restartAutoRefresh() {
+          clearInterval(refreshTimer);
+          clearInterval(countdownTimer);
+          secondsLeft = REFRESH_SECONDS;
+          el.countdown.textContent = `${secondsLeft}s`;
+
+          countdownTimer = setInterval(() => {
+            secondsLeft -= 1;
+            if (secondsLeft <= 0) secondsLeft = REFRESH_SECONDS;
+            el.countdown.textContent = `${secondsLeft}s`;
+          }, 1000);
+
+          refreshTimer = setInterval(fetchDepartures, REFRESH_SECONDS * 1000);
+        }
+
+        function useGeolocation() {
+          el.stationName.textContent = "Söker din station…";
+          if (!navigator.geolocation) {
+            el.stationName.textContent = "Geolocation stöds inte";
+            return;
+          }
+          navigator.geolocation.getCurrentPosition(
+            async (pos) => {
+              try {
+                await loadSites();
+                const { site, distanceKm } = findNearestSite(
+                  pos.coords.latitude,
+                  pos.coords.longitude,
+                );
+                if (!site) {
+                  el.stationName.textContent =
+                    "Hittade ingen station i närheten";
+                  return;
+                }
+                setStation(site, distanceKm);
+              } catch (err) {
+                el.stationName.textContent = "Kunde inte hämta stationslistan";
+                console.error(err);
+              }
+            },
+            (err) => {
+              el.stationName.textContent = "Sök din station nedan";
+              console.warn(err);
+            },
+            { timeout: 8000 },
+          );
+        }
+
+        function showSuggestions(query) {
+          if (!query || query.length < 2) {
+            el.suggestionList.style.display = "none";
+            return;
+          }
+          const q = query.toLowerCase();
+          const matches = allSites
+            .filter((s) => s.name && s.name.toLowerCase().includes(q))
+            .slice(0, 8);
+          if (!matches.length) {
+            el.suggestionList.innerHTML =
+              '<li style="cursor:default;color:#888;">Inga träffar</li>';
+            el.suggestionList.style.display = "block";
+            return;
+          }
+          el.suggestionList.innerHTML = matches
+            .map((s) => `<li data-id="${s.id}">${s.name}</li>`)
+            .join("");
+          el.suggestionList.style.display = "block";
+        }
+
+        el.stationInput.addEventListener("input", async (e) => {
+          await loadSites().catch(() => {});
+          showSuggestions(e.target.value);
+        });
+
+        el.stationInput.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") {
+            const firstMatch = el.suggestionList.querySelector("li[data-id]");
+            if (firstMatch) {
+              const site = allSites.find(
+                (s) => String(s.id) === firstMatch.dataset.id,
+              );
+              if (site) {
+                el.stationInput.value = "";
+                el.suggestionList.style.display = "none";
+                setStation(site, null);
+              }
+            }
+          }
+        });
+
+        el.suggestionList.addEventListener("click", (e) => {
+          const li = e.target.closest("li[data-id]");
+          if (!li) return;
+          const site = allSites.find((s) => String(s.id) === li.dataset.id);
+          if (site) {
+            el.stationInput.value = "";
+            el.suggestionList.style.display = "none";
+            setStation(site, null);
+          }
+        });
+
+        el.locateBtn.addEventListener("click", useGeolocation);
+
+        document.addEventListener("click", (e) => {
+          if (!e.target.closest(".search-panel"))
+            el.suggestionList.style.display = "none";
+        });
+
+        // Boot: try geolocation first, falls back to manual search on refusal/error.
+        loadSites()
+          .then(useGeolocation)
+          .catch(() => {
+            el.stationName.textContent = "Kunde inte ladda stationslistan";
+          });
+      })();
+    </script>
+  </body>
+</html>

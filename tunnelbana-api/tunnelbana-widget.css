@@ -1,0 +1,484 @@
+/* ============================================================
+   Tunnelbanestation — sidtema
+   ============================================================ */
+
+:root{
+  --tile: #e9ece8;
+  --tile-shadow: #cfd3ce;
+  --grout: #b9bdb8;
+  --rock: #0c0e0d;
+  --rock-deep: #050605;
+  --line-blue: #0072ba;
+  --line-blue-dark: #004d80;
+  --line-red: #d1232c;
+  --line-green: #148a41;
+  --board-bg: #060706;
+  --board-glow: #ff9d1f;
+  --board-glow-dim: #7a4c14;
+  --ink: #1c211f;
+  --paper: #f4f1e8;
+}
+
+*{ box-sizing: border-box; }
+
+html, body{
+  margin:0;
+  min-height: 100%;
+  background: var(--rock);
+}
+
+body{
+  font-family: 'Oswald', -apple-system, "Segoe UI", sans-serif;
+  color: var(--ink);
+  padding: 0 0 28px;
+}
+
+/* ---------- page wrapper (lets the T-sign hang from the very top) ---------- */
+.page-wrap{
+  position: relative;
+  display:flex;
+  flex-direction: column;
+  align-items:center;
+}
+
+/* ---------- T-skylt: hangs from the top of the page all the way to the footer ---------- */
+.t-sign{
+  position:absolute;
+  top: -6px;
+  bottom: 0;
+  right: 7%;
+  width: 84px;
+  z-index: 5;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.35));
+}
+.t-sign-plate{
+  position:relative;
+  width: 84px;
+  height: 62px;
+  flex-shrink:0;
+}
+.t-sign-plate .lobe{
+  position:absolute;
+  top:0;
+  width: 52px;
+  height: 62px;
+  background: #fdfdfb;
+  border: 3px solid var(--line-blue);
+  border-radius: 50% / 46%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow: inset 0 -4px 8px rgba(0,0,0,0.06);
+}
+.t-sign-plate .lobe.left{ left:0; }
+.t-sign-plate .lobe.right{ left:32px; }
+.t-sign-plate .t-letter{
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: 1.9rem;
+  color: var(--line-blue);
+  line-height:1;
+}
+.t-sign-pole{
+  width: 5px;
+  flex: 1 1 auto;
+  margin-top: -2px;
+  position:relative;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--line-blue) 0px, var(--line-blue) 14px,
+    #e7e7e2 14px, #e7e7e2 28px
+  );
+}
+
+/* ---------- station cat, keeping watch beside the pole ---------- */
+.station-cat{
+  position:absolute;
+  left: -50px;
+  bottom: 26px;
+  width: 62px;
+  height: auto;
+  z-index: 6;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.45));
+}
+.station-cat .eye{
+  fill: #ffce33;
+  filter: drop-shadow(0 0 3px rgba(255,206,51,0.9));
+}
+.station-cat .pupil{ fill:#0a0a0a; }
+
+@media (max-width: 560px){
+  .t-sign{ right: 14px; width: 64px; }
+  .t-sign-plate{ width:64px; height:48px; }
+  .t-sign-plate .lobe{ width:40px; height:48px; }
+  .t-sign-plate .lobe.right{ left:24px; }
+  .t-sign-plate .t-letter{ font-size:1.4rem; }
+  .station-cat{ left:-38px; bottom:18px; width:46px; }
+}
+
+/* ---------- rock face top & bottom ---------- */
+.rock-cap{
+  width:100%;
+  height: 34px;
+  background:
+    linear-gradient(115deg, transparent 48%, var(--rock-deep) 50%, transparent 52%) 0 0/38px 34px,
+    linear-gradient(245deg, transparent 48%, var(--rock-deep) 50%, transparent 52%) 14px 0/38px 34px,
+    var(--rock);
+  flex-shrink:0;
+}
+.rock-cap.bottom{ transform: scaleY(-1); }
+
+/* ---------- tiled wall ---------- */
+.tile-wall{
+  width:100%;
+  background:
+    linear-gradient(var(--grout), var(--grout)) 0 0/100% 2px,
+    linear-gradient(90deg, var(--grout), var(--grout)) 0 0/2px 100%,
+    var(--tile);
+  background-size: 100% 46px, 92px 100%;
+  box-shadow: inset 0 0 60px rgba(0,0,0,0.18);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding: 36px 16px 40px;
+}
+
+/* ---------- station name sign ---------- */
+.station-sign{
+  width:100%;
+  max-width: 520px;
+  background: var(--paper);
+  border-top: 7px solid var(--line-blue);
+  border-bottom: 7px solid var(--line-blue);
+  padding: 14px 20px;
+  text-align:center;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  margin-bottom: 26px;
+}
+.station-sign .eyebrow{
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  color: var(--line-blue-dark);
+  margin: 0 0 2px;
+  font-weight: 500;
+}
+.station-sign h1{
+  margin:0;
+  font-size: clamp(1.6rem, 6vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  text-transform: uppercase;
+  line-height:1.05;
+}
+.station-sign .sub{
+  margin-top: 4px;
+  font-size: 0.82rem;
+  color: #555;
+}
+
+/* ---------- departure board ---------- */
+.board-frame{
+  width:100%;
+  max-width: 520px;
+  background: #1c1c1a;
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4), inset 0 0 0 1px #333;
+}
+.board{
+  background: var(--board-bg);
+  border-radius: 2px;
+  padding: 14px 6px 6px;
+  position:relative;
+  overflow:hidden;
+}
+.board::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.025) 0px,
+    rgba(255,255,255,0.025) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events:none;
+}
+
+/* ---------- realistic sign header: white bar, orange end-caps, platform box ---------- */
+.sign-header{
+  display:flex;
+  align-items:stretch;
+  background:#fdfdfb;
+  border-radius: 2px 2px 0 0;
+  overflow:hidden;
+  margin: -14px -6px 10px;
+}
+.sign-header .accent{
+  width: 9px;
+  background: #e6531e;
+  flex-shrink:0;
+}
+.sign-header .content{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 10px;
+  padding: 7px 12px;
+}
+.platform-badge{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  flex-shrink:0;
+}
+.platform-badge .label{
+  font-size: 0.5rem;
+  letter-spacing: 0.06em;
+  color:#444;
+  margin-bottom:1px;
+}
+.platform-badge .num{
+  background:#111;
+  color:#fff;
+  font-weight:700;
+  font-size: 0.85rem;
+  padding: 1px 7px;
+  border-radius: 2px;
+  min-width: 18px;
+  text-align:center;
+  font-family: 'Oswald', sans-serif;
+}
+.direction-text{
+  flex:1;
+  text-align:center;
+  font-weight:700;
+  font-size: 0.98rem;
+  color:#111;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.camera-icon{
+  width: 18px;
+  height: 18px;
+  flex-shrink:0;
+  opacity:0.75;
+}
+
+.departures{
+  list-style:none;
+  margin:0;
+  padding: 4px 0 8px;
+  min-height: 96px;
+}
+.departures li{
+  display:flex;
+  align-items:baseline;
+  gap: 14px;
+  padding: 8px 14px;
+  font-family: 'Silkscreen', monospace;
+}
+.row-line{
+  flex: 0 0 auto;
+  font-weight:700;
+  font-size: 1.3rem;
+  color: var(--board-glow);
+  text-shadow: 0 0 6px rgba(255,157,31,0.5);
+  min-width: 28px;
+}
+
+.destination{
+  flex:1;
+  font-size: 1.15rem;
+  color: var(--board-glow);
+  text-shadow: 0 0 6px rgba(255,157,31,0.45);
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  letter-spacing: 0.01em;
+}
+.eta{
+  font-size: 1.15rem;
+  font-weight:700;
+  color: var(--board-glow);
+  text-shadow: 0 0 6px rgba(255,157,31,0.45);
+  min-width: 74px;
+  text-align:right;
+  flex-shrink:0;
+}
+
+.empty-state, .error-state{
+  padding: 30px 16px;
+  text-align:center;
+  color: var(--board-glow-dim);
+  font-family: 'Silkscreen', monospace;
+  font-size: 0.85rem;
+  line-height:1.5;
+}
+.error-state{ color: #b5573f; }
+
+.board-footer{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding: 6px 14px 2px;
+  font-family: 'Silkscreen', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+  color: #555;
+  border-top: 1px solid #2a2a26;
+}
+.board-footer .live-dot{
+  color: var(--board-glow);
+  animation: flicker 2.4s infinite;
+  margin-right: 4px;
+}
+@keyframes flicker{
+  0%, 92%, 100% { opacity: 1; }
+  94% { opacity: 0.4; }
+  96% { opacity: 1; }
+}
+
+/* ---------- search panel ---------- */
+.search-panel{
+  width:100%;
+  max-width: 520px;
+  margin-top: 28px;
+  background: var(--paper);
+  border-radius: 4px;
+  padding: 16px 18px 18px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+  position:relative;
+}
+.search-panel .label{
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #666;
+  margin: 0 0 8px;
+  font-weight: 500;
+}
+.search-row{
+  display:flex;
+  gap: 8px;
+}
+.search-row input{
+  flex:1;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1rem;
+  padding: 10px 12px;
+  border: 2px solid var(--ink);
+  border-radius: 3px;
+  background:#fff;
+  color: var(--ink);
+}
+.search-row input:focus{
+  outline: none;
+  border-color: var(--line-blue);
+}
+.search-row button{
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  font-size: 0.85rem;
+  padding: 0 16px;
+  background: var(--line-blue);
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.search-row button:hover{ background: var(--line-blue-dark); }
+.search-row button.locate{
+  background: var(--ink);
+}
+.search-row button.locate:hover{ background:#000; }
+
+.suggestions{
+  list-style:none;
+  margin: 8px 0 0;
+  padding:0;
+  border: 1px solid var(--grout);
+  border-radius: 3px;
+  overflow:hidden;
+  display:none;
+  background:#fff;
+}
+.suggestions li{
+  padding: 9px 12px;
+  font-size: 0.92rem;
+  cursor:pointer;
+  border-bottom: 1px solid #eee;
+}
+.suggestions li:last-child{ border-bottom:none; }
+.suggestions li:hover{ background: #eef3f8; }
+
+/* ---------- platform edge ---------- */
+.platform-edge{
+  width:100%;
+  height: 16px;
+  background: repeating-linear-gradient(
+    90deg,
+    #e8b800 0px, #e8b800 14px,
+    #1a1a1a 14px, #1a1a1a 18px
+  );
+  flex-shrink:0;
+}
+
+@media (max-width: 400px){
+  .destination, .eta{ font-size: 1.15rem; }
+}
+
+/* ---------- site footer (the pole reaches down to here) ---------- */
+.site-footer{
+  width:100%;
+  background: var(--line-blue);
+  color: #eaf3fb;
+  text-align:center;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  padding: 16px 20px;
+}
+
+/* ---------- scrolling ticker rows: first departure stands still, rest scroll right ---------- */
+.departures li.scroll-row{
+  overflow:hidden;
+  padding: 0;
+  position:relative;
+}
+.scroll-track{
+  position:relative;
+  left: -100%;
+  display:inline-flex;
+  align-items:baseline;
+  gap: 14px;
+  white-space:nowrap;
+  padding: 8px 14px;
+  animation: scroll-right 16s linear infinite;
+}
+.scroll-track .destination{
+  flex:none;
+  overflow:visible;
+  text-overflow:unset;
+}
+.scroll-track .eta{
+  min-width:auto;
+}
+.ticker-sep{
+  color: var(--board-glow-dim);
+  font-size: 1.1rem;
+  padding: 0 2px;
+}
+@keyframes scroll-right{
+  from{ left: -100%; }
+  to{ left: 100%; }
+}
+@media (prefers-reduced-motion: reduce){
+  .scroll-track{ animation: none; left: 0; }
+}
