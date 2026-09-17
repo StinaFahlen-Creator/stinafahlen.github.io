@@ -79,7 +79,17 @@
           Jag studerar growth marketing på Berghs, där jag lär mig allt från
           annonsering och konvertering till att läsa data och dra rätt
           slutsatser av den. Vid sidan av studierna driver jag min egna E-handel
-          <a href="https://collier.se/">Collier</a> där jag säljer smycken.
+          <a href="https://collier.se/" id="collier-link">Collier</a> <script>
+  document
+    .getElementById("collier-link")
+    .addEventListener("click", function () {
+      window.dataLayer = window.dataLayer || [];
+      dataLayer.push({
+        event: "collier_click",
+      });
+    });
+</script>
+där jag säljer smycken.
           Sedan starten 2026 har jag bland annat experimenterat mycket med SEO,
           och tagit sidan från 0-1000 klicks i månaden genom onpage SEO.
         </p>
